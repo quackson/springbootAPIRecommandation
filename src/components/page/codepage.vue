@@ -22,23 +22,12 @@
 		</div>
 	</el-col>
 	<el-col :span="11">
-		<div class="owncode">
-			
-			<template>
-				<img :src="imgsrc">
-			</template>
+		<div class="container">			
+			<div class="chart" ><chart :option="option" :auto-resize="true" @click="changeConcept"></chart></div>
 			
 		</div>
-		<div class='legend' style='margin-top:30px;right:10px;'>
-				<div class='legenditem' style='text-align:right;right:20px;'>
-					<span style='font-family:"楷体";color:#F00'>————嵌套调用&nbsp;&nbsp;</span>
-					<span style='font-family:"楷体"'>————顺序执行&nbsp;&nbsp;</span>
-					<span style='font-family:"楷体";color:#BA55D3'>————依赖关系&nbsp;&nbsp;</span>
-					<span style='font-family:"楷体";color:rgb(0,0,255)'>--------文件跳转</span>
-				</div>
-		</div>
-		<div class='filelist'>
-			<div class='title'>跳转查看:</div>
+		
+		<div class='title'>跳转查看:</div>
 					<div class="casecard">
 			  <el-col :span="12" v-for="item in fileName" :index="item.index" :key="item.index">
 				<el-card :body-style="{ padding: '10px' }" shadow="hover" style="background-color:#C0C4CC;marginLeft:10px;marginRight:10px;">
@@ -52,8 +41,6 @@
 			 </el-col>
 			</div>
 			
-		</div>
-		
 	</el-col>
 </el-row>	
 </div>
@@ -62,12 +49,91 @@
 
 <script>
 import Prism from "prismjs";
+import { use } from "echarts/core";
+import { CanvasRenderer } from "echarts/renderers";
+import { PieChart } from "echarts/charts";
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+} from "echarts/components";
+import VChart, { THEME_KEY } from "vue-echarts";
+
+use([
+  CanvasRenderer,
+  PieChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+]);
 export default {
 	components: {
-	 
+	 VChart
 	 },
+	provide: {
+    [THEME_KEY]: "light",
+	},
 	data(){
 			return {
+			option: {
+				title: {
+				  text: "Concept Map",
+				  left: "center",
+				},
+				tooltip: {
+				  trigger: "item",
+				},
+				series: [
+				  {
+					name: "Concept Map",
+					type: "graph",
+					layout:'force',
+					edgeSymbol:['','arrow'],
+					label:{
+					  show:true
+					},
+					force:{
+					  repulsion:1000
+					},
+					draggable:true,
+					data: [
+					  {
+						name: "数据结构",
+						fixed : false
+					  },
+					  {
+						name: "算法",
+						fixed : false
+					  },
+					  {
+						name: "排序",
+						fixed : false
+					  },
+					],
+					links: [
+					  {
+						source: "数据结构",
+						target: "算法",
+						value:0.5,
+					  },
+					  {
+						source: "算法",
+						target: "排序",
+						value:0.7
+					  },
+					],
+					emphasis: {
+					  itemStyle: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: "rgba(0, 0, 0, 0.5)",
+					  },
+					},
+				  },
+				],
+			},
+			inlinks : [],
+			outlinks : [],
 			repoPath:'1autodidact\communitycode',
 			fileName:[
 			{
@@ -171,11 +237,21 @@ export default {
 `,
 			}
 		},
+	changeConcept(params){
+      if( params.dataType=='node'){
+      console.log(params.name);
+      }
+      
+    },
 	created() {
 		
 	},
 	mounted(){  //页面初始化方法
 	  Prism.highlightAll()
+	  const that = this
+		window.addEventListener('resize', function() {
+		  that.echarts.resize() //初始化的
+		} )
 	 },
 	methods: {
 	}
@@ -225,9 +301,16 @@ export default {
 	top:30px;
 	left:25px;
 }
-.owncode::-webkit-scrollbar {
-   width: 0;
- }
+.container {
+  width: 700px;
+  height: 400px;
+}
+.chart {
+  left: 0%;
+  top: 0%;
+  width: 100%;
+  height:100%;
+}
 .el-row {
   margin-bottom: 20px;
   top:20px;
