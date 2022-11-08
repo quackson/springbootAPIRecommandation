@@ -12,6 +12,8 @@
   - 案例相似度评估与推荐
    图核算法（主要参考Gu X, Zhang H, Kim S. Codekernel: A graph kernel based approach to the selection of api usage examples[C]//2019 34th IEEE/ACM International Conference on Automated Software Engineering. IEEE, 2019: 590-601）
    谱聚类
+- 服务运行
+   - npm install & npm run serve
    
 
   
