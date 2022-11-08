@@ -1,46 +1,34 @@
 
 <template>
-<div>
+<div class="mainpageblock">
 <el-row :gutter="22">
 		<el-breadcrumb separator-class="el-icon-arrow-right" style="font-size:20px;left:20px;position:absolute">
 		  <el-breadcrumb-item :to="{ path: '/firstpage' }">首页</el-breadcrumb-item>
-		  <el-breadcrumb-item :to="{ path: '/firstpage' }">PostMapping()</el-breadcrumb-item>
-		  <el-breadcrumb-item :to="{ path: '/firstpage' }">Register</el-breadcrumb-item>
-		  <el-breadcrumb-item>13101144/health-check</el-breadcrumb-item>
+		  <el-breadcrumb-item :to="{ path: '/dashboard' }">{{api}}</el-breadcrumb-item>
+		  <el-breadcrumb-item>{{projectName}}</el-breadcrumb-item>
 		</el-breadcrumb>
-	<el-col :span="11">
+	<el-col :span="13">
 		<div class="owncode" v-infinite-scroll="load">
-				<pre  class="language-java line-numbers">
-					<code>{{javademo}}</code>
-				</pre>
+				 
+			<pre  class="language-java line-numbers" style="white-space:pre-wrap;">
+<code class="language-java">{{codepiece}}</code>
+			</pre>
+				
 		</div>
-		<div class="owncode" v-infinite-scroll="load">
-				<div style="font-size:15px;">R.java</div>
+		<div class="owncode" v-infinite-scroll="load" >
+				<div style="font-size:15px;white-space:pre-wrap;"></div>
 				<pre  class="language-java line-numbers">
-					<code>{{javaFull}}</code>
+<code>{{codefile}}</code>
 				</pre>
 		</div>
 	</el-col>
-	<el-col :span="11">
-		<div class="container">			
-			<div class="chart" ><chart :option="option" :auto-resize="true" @click="changeConcept"></chart></div>
-			
+	<el-col :span="9">
+		<div class="fileFolder">			
+			<el-tree :data="dirs" :props="defaultProps" @node-click="exchangecode" style="background-color:#F0F8FF;font-size:30px;"></el-tree>
 		</div>
-		
-		<div class='title'>跳转查看:</div>
-					<div class="casecard">
-			  <el-col :span="12" v-for="item in fileName" :index="item.index" :key="item.index">
-				<el-card :body-style="{ padding: '10px' }" shadow="hover" style="background-color:#C0C4CC;marginLeft:10px;marginRight:10px;">
-				  <div style="font-size:19px;padding: 14px;">
-					<span>{{item.method}}</span>
-				  </div>
-				  <div style="font-size:15px;padding:10px;">
-					<span>{{item.fileName}}</span>
-				  </div>
-				</el-card>
-			 </el-col>
-			</div>
-			
+		<div class="api">			
+			<el-tree :data="apis" :props="defaultProps" @node-click="changeAPI" style="background-color:#F0F8FF;font-size:30px;"></el-tree>
+		</div>
 	</el-col>
 </el-row>	
 </div>
@@ -75,166 +63,28 @@ export default {
 	},
 	data(){
 			return {
-			option: {
-				title: {
-				  text: "Concept Map",
-				  left: "center",
+			api:'',
+			apis:[
+				{
+					'label':'PostMapping',
+					'package':'org.springframework.web.bind.annotation',
+					'url':'https://docs.spring.io/spring-framework/docs/current/javadoc-api/',
 				},
-				tooltip: {
-				  trigger: "item",
-				},
-				series: [
-				  {
-					name: "Concept Map",
-					type: "graph",
-					layout:'force',
-					edgeSymbol:['','arrow'],
-					label:{
-					  show:true
-					},
-					force:{
-					  repulsion:1000
-					},
-					draggable:true,
-					data: [
-					  {
-						name: "数据结构",
-						fixed : false
-					  },
-					  {
-						name: "算法",
-						fixed : false
-					  },
-					  {
-						name: "排序",
-						fixed : false
-					  },
-					],
-					links: [
-					  {
-						source: "数据结构",
-						target: "算法",
-						value:0.5,
-					  },
-					  {
-						source: "算法",
-						target: "排序",
-						value:0.7
-					  },
-					],
-					emphasis: {
-					  itemStyle: {
-						shadowBlur: 10,
-						shadowOffsetX: 0,
-						shadowColor: "rgba(0, 0, 0, 0.5)",
-					  },
-					},
-				  },
-				],
-			},
-			inlinks : [],
-			outlinks : [],
-			repoPath:'1autodidact\communitycode',
-			fileName:[
-			{
-				fileName:' UserService.java',
-				filePath:'',
-				method:' userService.save()',
-			},
-			{
-				fileName:' AuthorizeController.java',
-				filePath:'',
-				method:` AuthorizeController.
-						registerUser()`
-			}
+				{
+					'label':'RequestBody',
+					'package':'',
+					'url':'https://docs.spring.io/spring-framework/docs/current/javadoc-api/',
+				}
 			],
-			
-			imgsrc: require('../page/b.png'),
-			javademo:`public static <T> R<T> success() {
-						return newResult(null, CommonConstants.SUCCESS, CommonConstants.SUCCESS_MESSAGE);
-					}`,
-			javaFull:`package com.github.health.check.util;
-
-					import com.github.health.check.constant.CommonConstants;
-					import java.io.Serializable;
-
-
-					public class R<T> implements Serializable {
-
-						private static final long serialVersionUID = 1L;
-
-						private int code;
-
-						private String msg;
-
-						private T data;
-
-						public int getCode() {
-							return code;
-						}
-
-						public void setCode(int code) {
-							this.code = code;
-						}
-
-						public String getMsg() {
-							return msg;
-						}
-
-						public void setMsg(String msg) {
-							this.msg = msg;
-						}
-
-						public T getData() {
-							return data;
-						}
-
-						public void setData(T data) {
-							this.data = data;
-						}
-
-						public static <T> R<T> success() {
-							return newResult(null, CommonConstants.SUCCESS, CommonConstants.SUCCESS_MESSAGE);
-						}
-
-						public static <T> R<T> success(T data) {
-							return newResult(data, CommonConstants.SUCCESS, CommonConstants.SUCCESS_MESSAGE);
-						}
-
-						public static <T> R<T> success(T data, String msg) {
-							return newResult(data, CommonConstants.SUCCESS, msg);
-						}
-
-						public static <T> R<T> failed() {
-							return newResult(null, CommonConstants.FAIL, CommonConstants.FAIL_MESSAGE);
-						}
-
-						public static <T> R<T> failed(String msg) {
-							return newResult(null, CommonConstants.FAIL, msg);
-						}
-
-						public static <T> R<T> failed(T data) {
-							return newResult(data, CommonConstants.FAIL, CommonConstants.FAIL_MESSAGE);
-						}
-
-						public static <T> R<T> failed(T data, String msg) {
-							return newResult(data, CommonConstants.FAIL, msg);
-						}
-
-						public static <T> R<T> failed(T data, int code, String msg) {
-							return newResult(data,code, msg);
-						}
-
-						private static <T> R<T> newResult(T data, int code, String msg) {
-							R<T> result = new R<>();
-							result.setCode(code);
-							result.setData(data);
-							result.setMsg(msg);
-							return result;
-						}
-
-					}
-`,
+			activeNames: ['1'],
+			dirs:[],
+			methodName:'',			
+			codepiece:'',
+			codefile:'',
+			fileName:'',
+			projectName:'',
+			fullapi:[],
+			id:''
 			}
 		},
 	changeConcept(params){
@@ -243,7 +93,33 @@ export default {
       }
       
     },
+	
 	created() {
+		this.fileNameshow=this.$route.params.projectName;
+		this.api=this.$route.params.method;
+		this.projectName=this.$route.params.projectName;
+		this.id=this.$route.params.caseID;
+		var _this=this
+		var ID=this.$route.params.caseID;
+		console.log('created code page')
+
+		var piece_ori=''
+		var file_ori=''
+		this.$http.request({
+				  url:_this.$url + '/opencase?caseID='+ID,
+				  method:'get',
+				}).then(function(response) {
+				  console.log(response),
+				  _this.codepiece = response.data.codepiece,
+				  _this.dirs=response.data.dirs,
+				  _this.codefile= response.data.codefile,
+				  _this.apis= response.data.apis,
+				  _this.fullapi= response.data.fullapi,
+				  console.log(_this.apis)
+				}).catch(function(error) {
+				  console.log(error)
+			});	
+		
 		
 	},
 	mounted(){  //页面初始化方法
@@ -253,7 +129,39 @@ export default {
 		  that.echarts.resize() //初始化的
 		} )
 	 },
+	watch:{
+     codefile:{//深度监听，可监听到对象、数组的变化
+         handler(val, oldVal){
+         },
+         deep:true //true 深度监听
+     },
+     codepiece:{//深度监听，可监听到对象、数组的变化
+         handler(val, oldVal){
+         },
+         deep:true //true 深度监听
+     }
+	},
 	methods: {
+		exchangecode(item){
+			console.log(item);
+			var this_=this;
+			var fileID=item.fileID;
+			this.$http.request({
+				  url:this_.$url + '/openfilebyid?fileID='+fileID+'&caseID='+this_.id,
+				  method:'get',
+				}).then(function(response) {
+				  console.log(response),
+				  this_.codepiece = response.data.codefile,
+				  this_.codefile= response.data.codefile,
+				  this_.apis= response.data.apis,
+				  console.log(this_.apis)
+				}).catch(function(error) {
+				  console.log(error)
+			});	
+		},
+		handleChange(val) {
+			console.log(val);
+		}
 	}
 }
 </script>
@@ -267,8 +175,8 @@ export default {
 }
 .title{
 	position:relative;
-	margin-top:20px;
-	margin-left:20px;
+	margin-top:5%;
+	margin-left:5%;
 	font-size:25px;
 }
 .fileitem{
@@ -279,7 +187,6 @@ export default {
 }
 .owncode{  
   overflow: auto;
-  overflow-y: scroll;
   overflow-x: scroll;
   white-space: nowrap;
   right:5px;
@@ -290,24 +197,13 @@ export default {
   position: relative; 
   z-index:1;
 }
-.casecard{
-	background-color:#909399;
-	border-radius: 30px;
-	font-family:"黑体";
-	font-weight: 3px;
-	font-size:x-large;
-    position: relative;
-    color:#909399;
-	top:30px;
-	left:25px;
-}
 .container {
-  width: 700px;
-  height: 400px;
+  width: 100%;
+  height: 500px;
 }
 .chart {
-  left: 0%;
-  top: 0%;
+  margin-left: 10%;
+  margin-top: 5%;
   width: 100%;
   height:100%;
 }
@@ -315,7 +211,7 @@ export default {
   margin-bottom: 20px;
   top:20px;
   bottom: 0%;
-  marginRight:20px;
+  margin-right:20px;
   width:100%;
   left:20px;
   position: relative; 
@@ -336,7 +232,30 @@ export default {
  line-height: 1.5;
  padding: 5px;
 }
- 
+.fileFolder{
+  right:5px;
+  width:100%;  
+  height:auto;
+  margin-top:10%;
+  background: #F0F8FF;
+  font-size:30px;
+  font-family:Georgia;
+  left:10%;
+  position: relative; 
+  z-index:1;
+}
+.api{
+  right:5px;
+  width:100%;  
+  height:auto;
+  margin-top:10%;
+  background-color: #F0F8FF;
+  font-size:30px;
+  font-family:Georgia;
+  left:10%;
+  position: relative; 
+  z-index:1;
+}
 /* optional */
 .prism-editor__textarea:focus {
  outline: none;

@@ -1,12 +1,12 @@
 <template>
-<div class="sidebar">
+<div class="sidebar" >
         <el-menu
             class="sidebar-el-menu"
             :default-active="onRoutes"
             :collapse="collapse"
-            background-color="#606266"
-            text-color="#bfcbd9"
-            active-text-color="#20a0ff"
+            background-color="#4682B4"
+            text-color="#191970"
+            active-text-color="#000080"
             unique-opened
             router
         >
@@ -103,7 +103,6 @@ export default {
     left: 0;
     top: 0px;
     bottom: 0;
-    overflow-y: scroll;
     z-index:50;
     float: left;
 }

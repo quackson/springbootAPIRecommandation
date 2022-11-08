@@ -37,9 +37,10 @@ export default {
     top: 0px;
     bottom: 0;
     padding-bottom: 30px;
+    overflow-y:scroll;
     position: absolute;
     left: 65px;
-	background-color:#E4E7ED;
+	background-color:#B0C4DE;
     transition: left .3s ease-in-out;
 }
 .content-collapse{

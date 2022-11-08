@@ -9,11 +9,12 @@ import axios from 'axios'
 import {Message} from 'element-ui'
 import ECharts from "vue-echarts"
 import "echarts"
+import 'highlight.js/styles/default.css'
 
 // Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.prototype.$http = axios
-Vue.prototype.$url = 'http://127.0.0.1:8000/Arxiver'
+Vue.prototype.$url = 'http://127.0.0.1'
 Vue.prototype.$message=Message
 Vue.component('chart',ECharts)
 

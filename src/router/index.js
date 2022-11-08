@@ -20,6 +20,7 @@ export default new Router({
             path: '/',
             redirect: '/firstpage'
         },
+        
         {
             path: '/',
             component: () => import(/* webpackChunkName: "home" */ '../components/common/Home.vue'),
@@ -36,24 +37,36 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/codepage.vue'),
                     meta: { title: '代码阅读页面' }
                 },
+                {
+                    path: '/mappage',
+                    name: 'mappage',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/mapPage.vue'),
+                    meta: { title: '代码阅读页面' }
+                },
 				{
                   path: '/case',
-                  component: () => import(/* webpackChunkName: "search" */ '../components/page/case.vue'),
+				  name:'case',
+                  component: () => import(/* webpackChunkName: "case" */ '../components/page/case.vue'),
                   meta: {title: '使用场景'}
                 },
 				{
                   path: '/help',
-                  component: () => import(/* webpackChunkName: "search" */ '../components/page/CollectionPage.vue'),
+                  component: () => import(/* webpackChunkName: "search" */ '../components/page/PaperPage.vue'),
                   meta: {title: '帮助'}
                 }
             ]
         },
+
         {
             path: '/firstpage',
-            component: () => import(/* webpackChunkName: "firstpage" */ '../components/page/firstpage.vue'),
+            component: () => import(/* webpackChunkName: "firstpage" */ '../components/page/zhou_firstpage.vue'),
             meta: { title: '首页' }
         },
-        
+        {
+            path: '/secondpage',
+            component: () => import(/* webpackChunkName: "firstpage" */ '../components/page/zhou_secondpage.vue'),
+            meta: { title: '首页' }
+        },
         {
             path: '/hello',
             component: () => import(/* webpackChunkName: "login" */ '../components/HelloWorld.vue'),
