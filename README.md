@@ -10,8 +10,15 @@
    ![image](https://user-images.githubusercontent.com/46640542/200562496-bf322cf8-dfd7-463e-b67d-3138d0449897.png)
    ![image](https://user-images.githubusercontent.com/46640542/200562523-2993f081-8bca-4ebc-882a-c4b68e8a282b.png)
   - 案例相似度评估与推荐
-   图核算法（主要参考Gu X, Zhang H, Kim S. Codekernel: A graph kernel based approach to the selection of api usage examples[C]//2019 34th IEEE/ACM International Conference on Automated Software Engineering. IEEE, 2019: 590-601）
-   谱聚类
+    - 图核算法（主要参考Gu X, Zhang H, Kim S. Codekernel: A graph kernel based approach to the selection of api usage examples[C]//2019 34th IEEE/ACM International Conference on Automated Software Engineering. IEEE, 2019: 590-601）
+   
+    - 谱聚类：将所有的数据都看作空间中的点，这些点之间可以用边连接起来，彼此之间的边的权值与点之间的距离正相关。通过对所有点组成的连接图进行切分子图工作，使得不同的子图之间的连边具有比较低的权值，而子图内的连边具有比较高的权值，从而达到聚类的目的。在本文已知相似度矩阵的情况下，使用谱聚类能够有效地得到结果。
+- 前端实现：
+   - vue.js
+   - ![image](https://user-images.githubusercontent.com/46640542/200565127-e8c2d0eb-ba93-40df-b3ac-930db6211b10.png)
+
+- 后端实现
+   - flask
 - 服务运行
    - npm install & npm run serve
    
